@@ -1,21 +1,26 @@
-//16:00
+//20:00
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <ternios.h>
 
 #define COL 60
 #define LIN 30
-
 
 int main(){
     //Esconde o cursor
     printf("\e[?25l");
 
+    //modo canonico
+    struct ternios oldt, newt;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
     int quit = 0;
     int x[1000], y[1000];
-    int fd_set;
     
     //Construção da plataforma
     while(!quit){
